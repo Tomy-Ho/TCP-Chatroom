@@ -1,7 +1,10 @@
 package chatroom.Server;
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,7 +32,7 @@ public class Server {
 
                 if(clientSocket.isConnected()){
                     System.out.println("A Client has connected.");
-                    ServerHandler sh = new ServerHandler();
+                    ServerHandler sh = new ServerHandler(serverIn, serverOut, clientlist);
                     clientlist.put(sh, "");
                     clientpool.execute(sh);
                 }
