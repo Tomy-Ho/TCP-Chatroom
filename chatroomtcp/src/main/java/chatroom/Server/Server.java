@@ -53,7 +53,7 @@ public class Server {
             clientpool.shutdown();
             serverCon.close();
             System.exit(0);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Failed to shut down Server: " + e);
         }
     }
