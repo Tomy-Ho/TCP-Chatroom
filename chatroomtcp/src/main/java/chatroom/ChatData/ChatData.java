@@ -1,5 +1,5 @@
 package chatroom.ChatData;
 
-public record ChatData (String msgType, String senderName, String chatMsg){
+public record ChatData (String msgType, String clientname, String sender, String chatMsg){
 
 }

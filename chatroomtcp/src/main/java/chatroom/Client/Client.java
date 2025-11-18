@@ -11,7 +11,6 @@ public class Client implements Runnable{
     PrintWriter clientOut;
     BufferedReader inputReader;
     Socket serverConnection;
-    String clientname = "";
 
     public void run(){
         try {
@@ -19,24 +18,31 @@ public class Client implements Runnable{
             clientIn = new BufferedReader(new InputStreamReader(serverConnection.getInputStream()));
             clientOut = new PrintWriter(serverConnection.getOutputStream(), true);
             inputReader = new BufferedReader(new InputStreamReader(System.in));
-            
-            if(serverConnection.isConnected()){
-                System.out.println("Succesfully connected to Server.");
-                ClientOutput coHandler = new ClientOutput(clientOut, inputReader, clientname, serverConnection);
-                Thread coHandlerThread = new Thread(coHandler);
-                coHandlerThread.start();
+         
+            System.out.println("Succesfully connected to Server.");
+            ClientOutput coHandler = new ClientOutput(clientOut, inputReader, serverConnection);
+            Thread coHandlerThread = new Thread(coHandler);
+            coHandlerThread.start();
 
-                ClientInput ciHandler = new ClientInput(clientIn);
-                ciHandler.receiveMessages();
-            } else {
-                System.out.println("Failed to connect to Server.");
+            ClientInput ciHandler = new ClientInput(clientIn);
+            ciHandler.receiveMessages();
+
+            if(serverConnection.isClosed()){
                 System.exit(0);
             }
             
         } catch (Exception e) {
             System.out.println("Failed to run client: " + e);
             System.exit(0);
+        } finally {
+            System.out.println("Disconnected.");
+            System.exit(0);
         }
+    }
+
+    public static void main(String[] args){
+        Client chatclient = new Client();
+        chatclient.run();
     }
 
 }

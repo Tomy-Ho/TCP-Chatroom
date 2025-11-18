@@ -11,7 +11,6 @@ import chatroom.ChatData.ChatData;
 public class ClientOutput implements Runnable{
     private PrintWriter clientOut;
     private BufferedReader inputReader;
-    private String clientname;
     private Socket clientToSeverconnection;
 
     String clientOutput = "";
@@ -19,10 +18,9 @@ public class ClientOutput implements Runnable{
     ChatData clientOutputData;
     ObjectMapper clientOutputMapper = new ObjectMapper();
 
-    public ClientOutput(PrintWriter clientOut, BufferedReader inputReader, String clientname, Socket clientToServerconnection){
+    public ClientOutput(PrintWriter clientOut, BufferedReader inputReader, Socket clientToServerconnection){
         this.inputReader = inputReader;
         this.clientOut = clientOut;
-        this.clientname = clientname;
         this.clientToSeverconnection = clientToServerconnection;
     }
 
@@ -30,7 +28,7 @@ public class ClientOutput implements Runnable{
         try {
             while (clientToSeverconnection.isConnected()) { 
                 clientOutput = inputReader.readLine();
-                clientOutputData = new ChatData("chat", clientname, clientOutput);
+                clientOutputData = new ChatData("chat", "clientname", "clientname", clientOutput);
                 clientOutputJson = clientOutputMapper.writeValueAsString(clientOutputData);
 
                 if(clientOutput.isEmpty() || clientOutput.matches("[\\t]")){

@@ -13,7 +13,7 @@ public class Server {
     private BufferedReader serverIn;
     private PrintWriter serverOut;
     private ServerSocket serverCon;
-    private HashMap <ServerHandler, String> clientlist;
+    private HashMap <ServerHandler, String> clientlist = new HashMap<>();
 
     ExecutorService clientpool;
     int socketNr = 1234;
@@ -22,7 +22,6 @@ public class Server {
         try {
              serverCon = new ServerSocket(socketNr);  
              System.out.println("New connection established!");
-            
 
              while(!serverCon.isClosed()){
                 Socket clientSocket = serverCon.accept();
@@ -31,8 +30,8 @@ public class Server {
                 clientpool = Executors.newCachedThreadPool();
 
                 if(clientSocket.isConnected()){
-                    System.out.println("A Client has connected.");
-                    ServerHandler sh = new ServerHandler(serverIn, serverOut, clientlist);
+                    System.out.println("Connecting...");
+                    ServerHandler sh = new ServerHandler(serverIn, serverOut, clientSocket, clientlist);
                     clientlist.put(sh, "");
                     clientpool.execute(sh);
                 }
