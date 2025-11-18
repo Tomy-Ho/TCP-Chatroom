@@ -1,6 +1,7 @@
 package chatroom.Client;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket; 
 
@@ -9,9 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import chatroom.ChatData.ChatData;
 
 public class ClientOutput implements Runnable{
-    private PrintWriter clientOut;
-    private BufferedReader inputReader;
-    private Socket clientToSeverconnection;
+    private final PrintWriter clientOut;
+    private final BufferedReader inputReader;
+    private final Socket clientToSeverconnection;
 
     String clientOutput = "";
     String clientOutputJson = "";
@@ -37,11 +38,12 @@ public class ClientOutput implements Runnable{
                     clientOut.println(clientOutputJson);
                 }   
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Failed to send Client message: " + e);
         }
     }
 
+    @Override
     public void run(){
         sendMessages();
     }

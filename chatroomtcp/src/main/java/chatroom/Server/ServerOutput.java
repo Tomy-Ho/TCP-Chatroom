@@ -1,11 +1,12 @@
 package chatroom.Server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;
 
 public class ServerOutput {
-    private ServerHandler shandler;
+    private final ServerHandler shandler;
     ObjectMapper serverMapper = new ObjectMapper();
     ChatData msgData;
     String msgJson;
@@ -22,7 +23,7 @@ public class ServerOutput {
                 msgJson = serverMapper.writeValueAsString(msgData);
                 sh.getServerOUt().println(msgJson);
             }
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             System.out.println("Failed to broadcast Message: " + e);
         }
     }
@@ -34,7 +35,7 @@ public class ServerOutput {
                 msgJson = serverMapper.writeValueAsString(msgData);
                 sh.getServerOUt().println(msgJson);
             }
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             System.out.println("Failed to sen message to all clients: " + e);
         }
     }
@@ -44,7 +45,7 @@ public class ServerOutput {
             msgData = new ChatData(msgtype, clientname, sender, message);
             msgJson = serverMapper.writeValueAsString(msgData);
             shandler.getServerOUt().println(msgJson);
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             System.out.println("Failed to cast message to client: " + e);
         }
     }

@@ -1,6 +1,7 @@
 package chatroom.Server;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
@@ -11,11 +12,16 @@ import chatroom.ChatData.ChatData;;
 
 public class ServerHandler implements Runnable {
 
-    private BufferedReader serverIn;
-    private PrintWriter serverOut;
+    private final BufferedReader serverIn;
+    private final PrintWriter serverOut;
     private String clientname = "";
-    private HashMap <ServerHandler, String> clientlist;
-    private Socket clientSocket;
+    private final HashMap <ServerHandler, String> clientlist;
+    private final Socket clientSocket;
+
+    String clientInput = "";
+    ObjectMapper clientMsgMapper = new ObjectMapper();
+    ChatData clientMsgData;
+    ServerOutput serverOutput = new ServerOutput(this);
 
     public ServerHandler(BufferedReader serverIn, PrintWriter serverOut, Socket clientSocket, HashMap <ServerHandler, String> clientlist){
             this.serverIn = serverIn;
@@ -23,12 +29,6 @@ public class ServerHandler implements Runnable {
             this.clientSocket = clientSocket;
             this.clientlist = clientlist;
     }
-
-    String clientInput = "";
-    ObjectMapper clientMsgMapper = new ObjectMapper();
-    String clientMsgJson = "";
-    ChatData clientMsgData;
-    ServerOutput serverOutput = new ServerOutput(this);
 
     public HashMap<ServerHandler, String> getClientList(){
         return this.clientlist;
@@ -63,7 +63,7 @@ public class ServerHandler implements Runnable {
 
             setUsername(desiredUsername);
             serverOutput.castMsgtToClient("Notification", clientname, "[Server]", "Welcome to the chatroom, " + clientname + "!" + "\n");
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Failed to login Client: " + e);
         }
     }
@@ -109,11 +109,12 @@ public class ServerHandler implements Runnable {
                 serverOutput.broadCastMsg(clientInput, clientname);
                 logoutClient(clientMsgData.chatMsg());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
 
+    @Override
     public void run(){
         loginClientToServer();
         handleMessages();

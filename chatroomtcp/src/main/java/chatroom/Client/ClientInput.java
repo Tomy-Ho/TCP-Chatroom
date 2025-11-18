@@ -1,13 +1,14 @@
 package chatroom.Client;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;
 
 public class ClientInput {
-    private BufferedReader clientIn;
+    private final BufferedReader clientIn;
     ObjectMapper clientInMapper = new ObjectMapper();
     String clientInJson = "";
     String clientInMsg = "";
@@ -28,7 +29,7 @@ public class ClientInput {
                     System.out.print(clientInData.sender() + " " + clientInMsg);
                 }
             } 
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Failed to receive Message: " + e);
         }
     }

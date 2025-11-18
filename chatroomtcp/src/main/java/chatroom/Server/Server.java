@@ -1,6 +1,7 @@
 package chatroom.Server;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -13,7 +14,7 @@ public class Server {
     private BufferedReader serverIn;
     private PrintWriter serverOut;
     private ServerSocket serverCon;
-    private HashMap <ServerHandler, String> clientlist = new HashMap<>();
+    private final HashMap <ServerHandler, String> clientlist = new HashMap<>();
 
     ExecutorService clientpool;
     int socketNr = 1234;
@@ -38,7 +39,7 @@ public class Server {
 
              }
              
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Failed to start Server: " + e);
             ShutDownServer();
         }
