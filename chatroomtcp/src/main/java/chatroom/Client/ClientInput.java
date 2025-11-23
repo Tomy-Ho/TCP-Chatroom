@@ -25,8 +25,10 @@ public class ClientInput {
                 clientInMsg = clientInData.chatMsg();
                 if(clientInData.msgType().equalsIgnoreCase("chat")){
                     System.out.println(clientInData.sender() + ": " + clientInMsg); 
-                } else {
+                } else if(clientInData.msgType().equalsIgnoreCase("Notification")){
                     System.out.print(clientInData.sender() + " " + clientInMsg);
+                } else {
+                    System.out.println(clientInData.sender() + " " + clientInMsg);
                 }
             } 
         } catch (IOException e) {

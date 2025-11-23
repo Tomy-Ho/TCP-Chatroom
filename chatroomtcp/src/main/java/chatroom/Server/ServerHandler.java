@@ -49,7 +49,7 @@ public class ServerHandler implements Runnable {
     private void loginClientToServer(){
         try {
             System.out.println("A Client has connected to the server.");
-            serverOutput.castMsgtToClient("login", clientname, "[Server]","Please enter a username: ");
+            serverOutput.castMsgtToClient("Notification", clientname, "[Server]","Please enter a username: ");
             
             clientInput = serverIn.readLine();
             clientMsgData = clientMsgMapper.readValue(clientInput, ChatData.class);
@@ -63,6 +63,7 @@ public class ServerHandler implements Runnable {
 
             setUsername(desiredUsername);
             serverOutput.castMsgtToClient("Notification", clientname, "[Server]", "Welcome to the chatroom, " + clientname + "!" + "\n");
+            System.out.println(clientlist);
         } catch (IOException e) {
             System.out.println("Failed to login Client: " + e);
         }
@@ -85,16 +86,16 @@ public class ServerHandler implements Runnable {
     private void setUsername(String username){
         clientlist.put(this, username);
         this.clientname = username;
-        serverOutput.castMsgtToClient("login", clientname, "[Server]", "Your username: " + this.clientname + "\n");
+        serverOutput.castMsgtToClient("login", clientname, "[Server]", "Your username: " + this.clientname );
     }
 
     private boolean checkValidUserName(String username){
         boolean namevalid = false;
         if(!username.matches(".\\p{L}.*") || username.isEmpty() || username.equalsIgnoreCase("/bye")){
-            serverOutput.castMsgtToClient("login", clientname, "[Server]", "Invalid username, please try again!");
+            serverOutput.castMsgtToClient("Notification", clientname, "[Server]", "Invalid username, please try again: ");
             return namevalid;
         } else  if (clientlist.containsValue(username)) {
-            serverOutput.castMsgtToClient("login", clientname, "[Server]", "Username already in use, please try again: ");
+            serverOutput.castMsgtToClient("Notification", clientname, "[Server]", "Username already in use, please try again: ");
             return namevalid;
         } else {
             namevalid = true;
@@ -106,7 +107,12 @@ public class ServerHandler implements Runnable {
         try {
             while((clientInput = serverIn.readLine()) != null){
                 clientMsgData = clientMsgMapper.readValue(clientInput, ChatData.class);
-                serverOutput.broadCastMsg(clientInput, clientname);
+
+                if(clientMsgData.chatMsg().contains("/whisper")){
+                    serverOutput.directMessage(clientInput);
+                } else {
+                   serverOutput.broadCastMsg(clientInput, clientname); 
+                }
                 logoutClient(clientMsgData.chatMsg());
             }
         } catch (IOException e) {
