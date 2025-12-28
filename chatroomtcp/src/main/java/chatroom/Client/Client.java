@@ -41,10 +41,4 @@ public class Client implements Runnable{
             System.exit(0);
         }
     }
-
-    public static void main(String[] args){
-        Client chatclient = new Client();
-        chatclient.run();
-    }
-
 }
