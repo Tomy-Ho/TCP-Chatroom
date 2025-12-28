@@ -1,7 +1,8 @@
-D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\ChatData\ChatData.java
 D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Client\Client.java
 D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Client\ClientInput.java
+D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Server\ServerOutput.java
+D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\MainUI\ClientUI.java
 D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Client\ClientOutput.java
 D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Server\Server.java
-D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Server\ServerHandler.java
-D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Server\ServerOutput.java
+D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\ChatData\ChatData.java
+D:\Projects\VSC\Java\TCP-Chatroom\chatroomtcp\src\main\java\chatroom\Server\ClientHandler.java
