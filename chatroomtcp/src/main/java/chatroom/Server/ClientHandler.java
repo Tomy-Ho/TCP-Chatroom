@@ -10,12 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;;
 
-public class ServerHandler implements Runnable {
+public class ClientHandler implements Runnable {
 
     private final BufferedReader serverIn;
     private final PrintWriter serverOut;
     private String clientname = "";
-    private final HashMap <ServerHandler, String> clientlist;
+    private final HashMap <ClientHandler, String> clientlist;
     private final Socket clientSocket;
 
     String clientInput = "";
@@ -23,14 +23,14 @@ public class ServerHandler implements Runnable {
     ChatData clientMsgData;
     ServerOutput serverOutput = new ServerOutput(this);
 
-    public ServerHandler(BufferedReader serverIn, PrintWriter serverOut, Socket clientSocket, HashMap <ServerHandler, String> clientlist){
+    public ClientHandler(BufferedReader serverIn, PrintWriter serverOut, Socket clientSocket, HashMap <ClientHandler, String> clientlist){
             this.serverIn = serverIn;
             this.serverOut = serverOut;
             this.clientSocket = clientSocket;
             this.clientlist = clientlist;
     }
 
-    public HashMap<ServerHandler, String> getClientList(){
+    public HashMap<ClientHandler, String> getClientList(){
         return this.clientlist;
     }
     
