@@ -1,16 +1,20 @@
-package chatroom.MainUI;
+package chatroom.Client.MainUI;
 
+import chatroom.Client.Client;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 ;
 
 public class HomeScreen extends VBox {
-    
-    public HomeScreen(){
+    Stage primaryStage;
+
+    public HomeScreen(Stage primary){
+        primaryStage = primary;
         this.setAlignment(Pos.CENTER);
         this.setId("vbox");
 
@@ -26,15 +30,23 @@ public class HomeScreen extends VBox {
         enterChatButton.setOnAction(e -> onEnterChatButton());
     }
 
-    private EventHandler<javafx.event.ActionEvent> onCloseAppButton(){
+    private void onCloseAppButton(){
         Platform.exit();
         System.exit(0);
-        return null;
     }
 
-    private EventHandler<javafx.event.ActionEvent> onEnterChatButton(){
-        ChatUI chatWindow = new ChatUI();
-        ClientUI.getInstance().getPrimaryStage().getScene().setRoot(chatWindow);
-        return null;
+    private void onEnterChatButton(){
+        try {
+            Client client = new Client();
+            System.out.println(primaryStage);
+            new Thread(() -> {
+                client.connectToServer();
+            }).start();
+
+            Scene clientScene = new Scene(client, 600, 700);
+            primaryStage.setScene(clientScene);
+            
+        } catch (Exception e) {
+        }
     }
 }

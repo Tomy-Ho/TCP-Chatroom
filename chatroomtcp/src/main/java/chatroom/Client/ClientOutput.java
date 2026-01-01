@@ -8,8 +8,9 @@ import java.net.Socket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;
+import javafx.scene.control.TextField;
 
-public class ClientOutput implements Runnable{
+public class ClientOutput {
     private final PrintWriter clientOut;
     private final BufferedReader inputReader;
     private final Socket clientToSeverconnection;
@@ -25,26 +26,23 @@ public class ClientOutput implements Runnable{
         this.clientToSeverconnection = clientToServerconnection;
     }
 
-    private void sendMessages(){
+    public void sendMessages(TextField inputText){
         try {
-            while (clientToSeverconnection.isConnected()) { 
-                clientOutput = inputReader.readLine();
+            clientOutput = inputReader.readLine();
+            if (clientOutput != null && !clientOutput.isEmpty()) { 
+                
                 clientOutputData = new ChatData("chat", "clientname", "clientname", clientOutput);
                 clientOutputJson = clientOutputMapper.writeValueAsString(clientOutputData);
 
-                if(clientOutput.isEmpty() || clientOutput.matches("[\\t]")){
-                    System.out.println("Messages can't be empty!");
-                } else {
-                    clientOut.println(clientOutputJson);
-                }   
+                clientOut.println(clientOutputJson);
+                inputText.clear();
+            }
+
+            if(clientOutput.isEmpty() || clientOutput.matches("[\\t]")){
+                System.out.println("Messages can't be empty!");
             }
         } catch (IOException e) {
             System.out.println("Failed to send Client message: " + e);
         }
-    }
-
-    @Override
-    public void run(){
-        sendMessages();
     }
 }

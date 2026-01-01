@@ -6,30 +6,34 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;
+import javafx.application.Platform;
+import javafx.scene.control.ListView;
 
 public class ClientInput {
     private final BufferedReader clientIn;
     ObjectMapper clientInMapper = new ObjectMapper();
     String clientInJson = "";
     String clientInMsg = "";
+    String printMsg = "";
     ChatData clientInData;
 
     public ClientInput(BufferedReader clientIn){
         this.clientIn = clientIn;
     }
 
-    public void receiveMessages(){
+    public void receiveMessages(ListView <String> chatBox){
         try {
             while ((clientInJson = clientIn.readLine()) != null){
                 clientInData = clientInMapper.readValue(clientInJson, ChatData.class);
                 clientInMsg = clientInData.chatMsg();
                 if(clientInData.msgType().equalsIgnoreCase("chat")){
-                    System.out.println(clientInData.sender() + ": " + clientInMsg); 
+                    printMsg = clientInData.sender() + ": " + clientInMsg;
                 } else if(clientInData.msgType().equalsIgnoreCase("Notification")){
-                    System.out.print(clientInData.sender() + " " + clientInMsg);
+                    printMsg = clientInData.sender() + " " + clientInMsg;
                 } else {
-                    System.out.println(clientInData.sender() + " " + clientInMsg);
+                    printMsg = clientInData.sender() + " " + clientInMsg;
                 }
+                Platform.runLater(() -> chatBox.getItems().add(printMsg));
             } 
         } catch (IOException e) {
             System.out.println("Failed to receive Message: " + e);
