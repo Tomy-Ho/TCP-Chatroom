@@ -22,7 +22,8 @@ public class Client extends VBox {
     TextField inputText = new TextField();
     Button sendMsgButton = new Button("Send");
     ClientOutput coHandler;
-    
+    boolean isAlive = false;
+
     public Client(){        
         HBox inputTextBox = new HBox(10, inputText, sendMsgButton);
         this.getChildren().addAll(chatBox, inputText, sendMsgButton); 
@@ -39,6 +40,7 @@ public class Client extends VBox {
             clientIn = new BufferedReader(new InputStreamReader(serverConnection.getInputStream()));
             clientOut = new PrintWriter(serverConnection.getOutputStream(), true);
             System.out.println("Succesfully connected to Server.");
+            isAlive = true;
 
             coHandler = new ClientOutput(clientOut);
             new Thread(() -> {

@@ -43,7 +43,6 @@ public class HomeScreen extends VBox {
         
             Scene clientScene = new Scene(client, 600, 700);
             primaryStage.setScene(clientScene);
-            
         } catch (Exception e) {
         }
     }
