@@ -5,26 +5,37 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ClientUI extends Application{
+    static ClientUI clientUIinstance;
+    private Stage primary;
+
+    public static ClientUI getInstance(){
+        if(clientUIinstance == null){
+            clientUIinstance = new ClientUI();
+        }
+        return clientUIinstance;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        /*new Thread(() -> {
-            Client client = new Client();
-            client.run();
-        }).start();*/
+        primary = stage;
         System.out.println("Starting screen...");
-        stage.setWidth(200);
-        stage.setHeight(400);
+        primary.setTitle("Menu");
+        primary.setWidth(500);
+        primary.setHeight(400);
 
         HomeScreen startWindow = new HomeScreen();
         Scene scene = new Scene(startWindow);
         
-        stage.setScene(scene);
-        stage.show();
+        primary.setScene(scene);
+        primary.show();
     }
     
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Stage getPrimaryStage(){
+        return primary;
     }
 }
 

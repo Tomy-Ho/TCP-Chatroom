@@ -23,15 +23,18 @@ public class HomeScreen extends VBox {
         this.getChildren().addAll(homeTitle, enterChatButton, closeApplication);
 
         closeApplication.setOnAction(e -> onCloseAppButton());
-    }
-
-    public void initialize(){
-
+        enterChatButton.setOnAction(e -> onEnterChatButton());
     }
 
     private EventHandler<javafx.event.ActionEvent> onCloseAppButton(){
         Platform.exit();
         System.exit(0);
+        return null;
+    }
+
+    private EventHandler<javafx.event.ActionEvent> onEnterChatButton(){
+        ChatUI chatWindow = new ChatUI();
+        ClientUI.getInstance().getPrimaryStage().getScene().setRoot(chatWindow);
         return null;
     }
 }
