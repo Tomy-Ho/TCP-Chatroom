@@ -21,17 +21,16 @@ public class Client extends VBox {
     ListView <String> chatBox = new ListView<>();; 
     TextField inputText = new TextField();
     Button sendMsgButton = new Button("Send");
+    ClientOutput coHandler;
     
-    public Client(){
+    public Client(){        
         HBox inputTextBox = new HBox(10, inputText, sendMsgButton);
         this.getChildren().addAll(chatBox, inputText, sendMsgButton); 
-        
-        ClientOutput coHandler = new ClientOutput(clientOut, inputReader, serverConnection);
 
-        if(coHandler != null){
-            sendMsgButton.setOnAction(e -> coHandler.sendMessages(inputText));
-            inputText.setOnAction(e -> coHandler.sendMessages(inputText));
-        }  
+        
+        sendMsgButton.setOnAction(e -> coHandler.sendMessages(inputText));
+        inputText.setOnAction(e -> coHandler.sendMessages(inputText));
+        
     }
 
     public void connectToServer(){
@@ -41,8 +40,11 @@ public class Client extends VBox {
             clientOut = new PrintWriter(serverConnection.getOutputStream(), true);
             System.out.println("Succesfully connected to Server.");
 
-            ClientInput ciHandler = new ClientInput(clientIn);
-            ciHandler.receiveMessages(chatBox);
+            coHandler = new ClientOutput(clientOut);
+            new Thread(() -> {
+                ClientInput ciHandler = new ClientInput(clientIn);
+                ciHandler.receiveMessages(chatBox);
+            }).start();
         } catch (IOException e) {
             System.out.println("Failed to run client: " + e);
             System.exit(0);

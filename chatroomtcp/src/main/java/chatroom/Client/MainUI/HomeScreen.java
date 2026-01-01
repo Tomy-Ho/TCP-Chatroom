@@ -38,11 +38,9 @@ public class HomeScreen extends VBox {
     private void onEnterChatButton(){
         try {
             Client client = new Client();
-            System.out.println(primaryStage);
-            new Thread(() -> {
-                client.connectToServer();
-            }).start();
 
+            client.connectToServer();
+        
             Scene clientScene = new Scene(client, 600, 700);
             primaryStage.setScene(clientScene);
             

@@ -33,7 +33,10 @@ public class ClientInput {
                 } else {
                     printMsg = clientInData.sender() + " " + clientInMsg;
                 }
-                Platform.runLater(() -> chatBox.getItems().add(printMsg));
+                Platform.runLater(() -> {
+                    chatBox.getItems().add(printMsg);
+                    chatBox.scrollTo(chatBox.getItems().size() - 1);
+                });
             } 
         } catch (IOException e) {
             System.out.println("Failed to receive Message: " + e);
