@@ -36,9 +36,8 @@ public class Server {
                     clientlist.put(sh, "");
                     clientpool.execute(sh);
                 }
-
+                System.out.println(clientlist);
              }
-             
         } catch (IOException e) {
             System.out.println("Failed to start Server: " + e);
             ShutDownServer();

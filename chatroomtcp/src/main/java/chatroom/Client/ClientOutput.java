@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import chatroom.ChatData.ChatData;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class ClientOutput {
@@ -20,7 +21,7 @@ public class ClientOutput {
         this.clientOut = clientOut;
     }
 
-    public void sendMessages(TextField inputText){
+    public void sendMessages(TextField inputText, ListView <String> chatBox){
         try {
             clientOutput = inputText.getText();
             if (clientOutput != null && !clientOutput.isEmpty()) { 
@@ -33,7 +34,8 @@ public class ClientOutput {
             }
 
             if(clientOutput.isEmpty() || clientOutput.matches("[\\t]")){
-                System.out.println("Messages can't be empty!");
+                chatBox.getItems().add("Messages can't be empty!");
+                chatBox.scrollTo(chatBox.getItems().size() - 1);
             }
         } catch (IOException e) {
             System.out.println("Failed to send Client message: " + e);

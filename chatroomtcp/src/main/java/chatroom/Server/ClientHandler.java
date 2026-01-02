@@ -46,6 +46,10 @@ public class ClientHandler implements Runnable {
         return this.clientname;
     }
 
+    public Socket getClientSocket(){
+        return this.clientSocket;
+    }
+
     private void loginClientToServer(){
         try {
             System.out.println("A Client has connected to the server.");
@@ -69,18 +73,19 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void logoutClient(String clientMsg){
+    private void logoutClient(){
         try {
-            if(clientMsg.equalsIgnoreCase("/bye")){
-            serverOutput.castMsgtToClient("logout", clientname, "[Server]", "You left the chatroom." + "\n");
-            clientSocket.close();
-            serverOutput.castMsgToAll("Notification", clientname, "[Server]", clientname + " left the chatroom." + "\n");
-            clientlist.remove(this);
+            System.out.println("siuu");
+            if(clientMsgData.chatMsg().equals("Disconnected.") 
+                && clientMsgData.msgType().equals("Connection")){
+                serverOutput.castMsgtToClient("logout", clientname, "[Server]", "You left the chatroom." + "\n");
+                clientSocket.close();
+                serverOutput.castMsgToAll("Notification", clientname, "[Server]", clientname + " left the chatroom." + "\n");
+                clientlist.remove(this);
             }
         } catch (Exception e) {
             System.out.println("Faile to logout client: " + e);
         }
-        
     }
 
     private void setUsername(String username){
@@ -107,13 +112,13 @@ public class ClientHandler implements Runnable {
         try {
             while((clientInput = serverIn.readLine()) != null){
                 clientMsgData = clientMsgMapper.readValue(clientInput, ChatData.class);
+                logoutClient();
 
                 if(clientMsgData.chatMsg().contains("/whisper")){
                     serverOutput.directMessage(clientInput);
                 } else {
-                   serverOutput.broadCastMsg(clientInput, clientname); 
+                    serverOutput.broadCastMsg(clientInput, clientname); 
                 }
-                logoutClient(clientMsgData.chatMsg());
             }
         } catch (IOException e) {
             System.out.println(e);

@@ -29,4 +29,3 @@ public class ClientUI extends Application{
         launch(args);
     }
 }
-

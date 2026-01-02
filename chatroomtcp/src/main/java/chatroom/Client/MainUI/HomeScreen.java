@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 ;
 
 public class HomeScreen extends VBox {
-    Stage primaryStage;
+    private Stage primaryStage;
 
     public HomeScreen(Stage primary){
         primaryStage = primary;
@@ -37,10 +37,9 @@ public class HomeScreen extends VBox {
 
     private void onEnterChatButton(){
         try {
-            Client client = new Client();
-
+            Client client = new Client(primaryStage);
             client.connectToServer();
-        
+            
             Scene clientScene = new Scene(client, 600, 700);
             primaryStage.setScene(clientScene);
         } catch (Exception e) {
