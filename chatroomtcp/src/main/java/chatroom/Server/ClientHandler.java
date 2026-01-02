@@ -46,10 +46,6 @@ public class ClientHandler implements Runnable {
         return this.clientname;
     }
 
-    public Socket getClientSocket(){
-        return this.clientSocket;
-    }
-
     private void loginClientToServer(){
         try {
             System.out.println("A Client has connected to the server.");
